@@ -1,0 +1,21 @@
+{
+  "A_arith_0": "0.1731921989623846",
+  "A_typ_0": "0.003261547912466626",
+  "Delta": "4.2575",
+  "R0_typ_over_arith": "0.01883195624287326",
+  "T": "0.02",
+  "U": "2.5",
+  "converged": true,
+  "diff": "0.001149865364413372",
+  "dne": "-0.00219888073328145",
+  "error": "",
+  "iterations": 1,
+  "kind": "typ",
+  "mu": "0.788344005254028",
+  "ne_actual": "0.4978011192667186",
+  "ne_target": "0.5",
+  "runtime_dmft_sec": "0.003024578094482422",
+  "solution_dir": "/home/2/kj405942/Byczuk_Freericks/filling_variantB_freericks/pbs_variantB_T002_typ_21x21_mu20/chunks/T_0p02__Didx_17_17__typ/dmft_solutions/T_0p02/U_2p5__Delta_4p2575__w1_0p5__typ",
+  "status": "ok",
+  "w1_nf": "0.5"
+}

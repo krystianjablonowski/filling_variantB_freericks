@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+*.pyo
+*.log
+*.out
+*.err
+
+# duże / generowane dane - odkomentuj jeśli to wyniki, nie kod
+# pbs_variantB_T002_typ_21x21_mu20/
+# pbs_variantB_jobs/

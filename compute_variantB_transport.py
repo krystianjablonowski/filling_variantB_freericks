@@ -38,6 +38,7 @@ FIELDNAMES = [
     "max_ImSigma_thermal",
     "n_causality_bad",
     "n_causality_bad_thermal",
+    "hilbert_mode",
     "solution_dir",
     "status",
     "error",

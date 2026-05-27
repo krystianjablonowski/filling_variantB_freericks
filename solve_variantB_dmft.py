@@ -35,6 +35,7 @@ FIELDNAMES = [
     "converged",
     "diff",
     "runtime_dmft_sec",
+    "hilbert_mode",
     "solution_dir",
     "status",
     "error",
@@ -121,6 +122,7 @@ def path_task(payload: dict) -> list[dict]:
                 max_iter=args["max_iter"],
                 tol=args["tol"],
                 mix=args["mix"],
+                hilbert_mode=args["hilbert_mode"],
             )
             i0 = int(np.argmin(np.abs(res.omega)))
             A_arith_0 = float(res.rho_arith[i0])
@@ -143,6 +145,7 @@ def path_task(payload: dict) -> list[dict]:
                 "converged": res.converged,
                 "diff": fmt(res.diff),
                 "runtime_dmft_sec": fmt(res.runtime_sec),
+                "hilbert_mode": args["hilbert_mode"],
                 "solution_dir": str(sol_dir),
                 "status": "ok",
                 "error": "",
@@ -191,6 +194,7 @@ def main() -> None:
     ap.add_argument("--max-iter", type=int, default=800)
     ap.add_argument("--tol", type=float, default=1e-4)
     ap.add_argument("--mix", type=float, default=0.12)
+    ap.add_argument("--hilbert-mode", choices=["pv", "eta"], default="pv", help="pv is principal-value Hilbert transform; eta reproduces older broadened transform")
     ap.add_argument("--mu-min", type=float, default=-8.0)
     ap.add_argument("--mu-max", type=float, default=8.0)
     ap.add_argument("--ne-tol", type=float, default=5e-3)

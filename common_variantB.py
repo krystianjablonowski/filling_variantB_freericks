@@ -133,6 +133,24 @@ def green_from_ldos(omega, rho, eta, block_size=256):
     return green
 
 
+def green_from_ldos_eta(omega, rho, eta, block_size=256):
+    weights = trapz_weights(omega) * rho
+    green = np.empty(len(omega), dtype=complex)
+    for start in range(0, len(omega), block_size):
+        stop = min(start + block_size, len(omega))
+        z = omega[start:stop, None] + 1j * eta - omega[None, :]
+        green[start:stop] = np.sum(weights[None, :] / z, axis=1)
+    return green
+
+
+def medium_green_from_ldos(omega, rho, eta, hilbert_mode):
+    if hilbert_mode == "pv":
+        return green_from_ldos(omega, rho, eta)
+    if hilbert_mode == "eta":
+        return green_from_ldos_eta(omega, rho, eta)
+    raise ValueError(f"unknown Hilbert mode: {hilbert_mode}")
+
+
 def filling_from_rho(omega, rho, T):
     return float(integrate_trapz(fermi(omega, T) * rho, omega))
 
@@ -189,6 +207,7 @@ def solve_dmft_for_mu(
     max_iter: int,
     tol: float,
     mix: float,
+    hilbert_mode: str = "pv",
     initial_hybrid: np.ndarray | None = None,
 ) -> DMFTResult:
     t0 = time.time()
@@ -205,7 +224,7 @@ def solve_dmft_for_mu(
     for iteration in range(1, max_iter + 1):
         rho_arith, rho_typ = disorder_averages(hybrid, omega, eps_grid, U, disorder_W, mu, w1, eta)
         rho_medium = rho_typ if kind == "typ" else rho_arith
-        green_medium = green_from_ldos(omega, rho_medium, eta)
+        green_medium = medium_green_from_ldos(omega, rho_medium, eta, hilbert_mode)
         hybrid_new = (t_bethe * t_bethe) * green_medium
         diff = float(np.max(np.abs(hybrid_new - hybrid)))
         hybrid = mix * hybrid_new + (1.0 - mix) * hybrid
@@ -215,7 +234,7 @@ def solve_dmft_for_mu(
 
     rho_arith, rho_typ = disorder_averages(hybrid, omega, eps_grid, U, disorder_W, mu, w1, eta)
     rho_medium = rho_typ if kind == "typ" else rho_arith
-    green_medium = green_from_ldos(omega, rho_medium, eta)
+    green_medium = medium_green_from_ldos(omega, rho_medium, eta, hilbert_mode)
     sigma = omega + 1j * eta + mu - hybrid - 1.0 / green_medium
     ne_actual = filling_from_rho(omega, rho_arith, T)
     return DMFTResult(

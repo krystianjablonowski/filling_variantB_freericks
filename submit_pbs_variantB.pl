@@ -23,6 +23,7 @@ my %opt = (
     "max-iter" => 800,
     "tol" => "1e-4",
     "mix" => 0.12,
+    "hilbert-mode" => "pv",
     "mu-min" => -8.0,
     "mu-max" => 8.0,
     "ne-tol" => "5e-3",
@@ -55,6 +56,7 @@ GetOptions(
     "max-iter=i" => \$opt{"max-iter"},
     "tol=s" => \$opt{"tol"},
     "mix=f" => \$opt{"mix"},
+    "hilbert-mode=s" => \$opt{"hilbert-mode"},
     "mu-min=f" => \$opt{"mu-min"},
     "mu-max=f" => \$opt{"mu-max"},
     "ne-tol=s" => \$opt{"ne-tol"},
@@ -124,6 +126,7 @@ for my $T (@Ts) {
         print $fh "--kind '$opt{kind}' ";
         print $fh "--omega0 $opt{omega0} --n-omega $opt{'n-omega'} --n-eps $opt{'n-eps'} ";
         print $fh "--eta $opt{eta} --max-iter $opt{'max-iter'} --tol $opt{tol} --mix $opt{mix} ";
+        print $fh "--hilbert-mode '$opt{'hilbert-mode'}' ";
         print $fh "--mu-min $opt{'mu-min'} --mu-max $opt{'mu-max'} --ne-tol $opt{'ne-tol'} --max-mu-iter $opt{'max-mu-iter'} ";
         print $fh "--mu-accept-diff $opt{'mu-accept-diff'} ";
         print $fh "--workers $opt{workers} --out '$chunk_out' --resume\n";
